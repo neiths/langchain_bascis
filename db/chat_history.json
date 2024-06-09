@@ -1,0 +1,64 @@
+{
+    "5": [
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "HumanMessage"
+            ],
+            "kwargs": {
+                "content": "i lost my ring, I am so sad",
+                "type": "human"
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "AIMessage"
+            ],
+            "kwargs": {
+                "content": "Oh no, that's awful!  I'm so sorry you lost your ring.  It's totally understandable to be upset, it's a sentimental piece.  Did you check everywhere?  Have you tried retracing your steps?  Sometimes when we're stressed, we forget where we put things.  Don't worry, we'll figure it out together!  Do you want to brainstorm some ideas? Maybe we can even make a funny little \"lost ring\" poster to put up in your neighborhood.  What do you say? \n",
+                "type": "ai",
+                "tool_calls": [],
+                "invalid_tool_calls": []
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "HumanMessage"
+            ],
+            "kwargs": {
+                "content": "sorry, I forgot what i just said. do you remember it. ",
+                "type": "human"
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "AIMessage"
+            ],
+            "kwargs": {
+                "content": "Hey, it happens to the best of us!  No worries at all. You were telling me about losing your ring, and how sad you were about it.  Do you want to talk about it more?  Maybe we can brainstorm some ways to find it together.  Or maybe you just need a friend to listen?  Whatever you need, I'm here for you. \n",
+                "type": "ai",
+                "tool_calls": [],
+                "invalid_tool_calls": []
+            }
+        }
+    ]
+}
