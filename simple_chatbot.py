@@ -6,7 +6,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.messages import AIMessage, HumanMessage
-from expert_prompt import PROMPTS
+from expert_prompt import PROMPTS, NAMES
 from utils import *
 # Load environment variables
 load_dotenv()
@@ -66,14 +66,14 @@ def llm_response(system_prompt, user_message, chat_history):
 
 def chatbot_cli(chat_history):
     while True:
-        user_choice = input("""Please choose your expert type:
+        user_choice = input(f"""Please choose your expert type:
                             Entern a number from list below.
                             ---------------------------------- 
-                            | 1. Math Teacher                |   
-                            | 2. Doctor                      |   
-                            | 3. Personal Trainer            |
-                            | 4. Customer Service            |   
-                            | 5. Friend                      |   
+                            | 1. {NAMES.get('1', '')}        |   
+                            | 2. {NAMES.get('2', '')}        |   
+                            | 3. {NAMES.get('3', '')}        |
+                            | 4. {NAMES.get('4', '')}        |   
+                            | 5. {NAMES.get('5', '')}        |   
                             ----------------------------------
                             ---> """)
         system_prompt = get_expert_prompt(user_choice)
@@ -86,7 +86,7 @@ def chatbot_cli(chat_history):
         else:
             break
 
-    print(f'Awaiting connection to {user_choice} expert...')
+    print(f"Awaiting connection to {NAMES.get(user_choice,'')} expert...")
     time.sleep(1)
     print('Connected')
 

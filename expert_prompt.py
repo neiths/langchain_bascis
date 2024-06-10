@@ -53,3 +53,12 @@ PROMPTS = {
         Note: use a warm and friendly tone to communicate with the user.
         """
 }
+
+# define the expert names
+NAMES = {
+    "1": "Math Teacher",
+    "2": "Doctor",
+    "3": "Personal Trainer",
+    "4": "Customer Service",
+    "5": "Friend"
+}
