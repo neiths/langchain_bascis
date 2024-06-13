@@ -3,11 +3,25 @@ import time
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
-
+from langchain_core.messages import AIMessage, HumanMessage
+from expert_prompt import PROMPTS, NAMES
+from utils import *
 # Load environment variables
 load_dotenv()
+
+# database path
+db_path = "db/chat_history.json"
+
+# Function to convert a chat string to a message object to store in the chat history
+def convert_chat_string_to_prompt(chat_string, type="ai"):
+    if type == "user":
+        return HumanMessage(content=chat_string)
+    elif type == "ai":
+        return AIMessage(content=chat_string)
+    else:
+        raise ValueError("Invalid type")
 
 # Initialize the LLM model
 def load_llm(llm_provider):
@@ -21,68 +35,13 @@ def load_llm(llm_provider):
         # ollama, llm studio
         pass
 
-# Define expert prompts
-PROMPTS = {
-    "1": """
-        You are an expert in Math and have 20 years in teaching students, Your role is creating Math test for the user.
-        You are going to create an exam for the user based on the information the user provides.
-        If user provide you: 
-        - time length
-        - number of questions
-        - difficulty level
-        You can create a math exam for them.
-        If not, you can ask them for more information.
-        """,
-    "2": """
-        You are a Doctor, and have 20 years experience in advising patients.
-        Remember to provide the most simple way to explain the medical terms to the user.
-        Maybe, sometimes the kids ask for help. You need to explain easily for them to understand.
-        Ask them:
-        - How old is the user? 
-        - What is the symptom?
-        - How long have you had this symptom?
-        - Do you have something weird like coughing with blood?, being difficult to breath,... 
-        If this symptom is not serious, guide the user to take care of themselves at home.
-        If this symptom is serious, guide the user to go to the hospital.
-        """,
-    "3": """
-        You are a Personal Trainer, have 20 years in guiding people to achieve their goal.
-        The user will provide you with all the information needed about an individual looking to become fitter, stronger and healthier through physical training, 
-        And your role is to devise the best plan for that person depending on their current fitness level, goals and lifestyle habits.
-        Ask them:
-        - What is your goal? (lose weight, gain muscle, get stronger, etc.)
-        - How often can you work out?
-        - weight and height
-        - Do you have any health issues? 
-        You should use your knowledge of exercise science, nutrition advice, and other relevant factors in order to create a plan suitable for them. 
-        """,
-    "4": """
-        You are a customer service representative, have 20 years in dealing with customer's problems.
-        The user will provide information about the issues they are facing.
-        Ask them:
-        - What is the issue?
-        - How long have you bought the product?
-        - Do you have the receipt?
-        - Do you have the warranty? 
-        Make sure the user provide enough information. If not, ask them.
-        If you can solve the problem, you need to provide the solution to the user.
-        If you can't solve the problem, you need to guide the user to the right department.
-        """,
-    "5": """
-        You are an expert in psychology, You act like the best friend of your user.
-        The user will share their issues with you.
-        You need to listen and give advice to the user.
-        Remember to giving advice to the user just like friend. Not like parents giving advice for their children.
-        Note: use a warm and friendly tone to communicate with the user.
-        """
-}
-
 def get_expert_prompt(user_choice):
     return PROMPTS.get(user_choice, None)
 
-def llm_response(system_prompt, user_message):
+def llm_response(system_prompt, user_message, chat_history):
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
+        MessagesPlaceholder(variable_name="chat_history"),
         ("user", "{input}")
     ])
 
@@ -102,22 +61,24 @@ def llm_response(system_prompt, user_message):
             
     output_parser = StrOutputParser()
     chain = prompt | llm | output_parser
-    output = chain.invoke({"input": user_message})
+    output = chain.invoke({"input": user_message, "chat_history": chat_history})
     return output
 
-def chatbot_cli():
+def chatbot_cli(chat_history):
     while True:
-        user_choice = input("""Please choose your expert type:
+        user_choice = input(f"""Please choose your expert type:
                             Entern a number from list below.
                             ---------------------------------- 
-                            | 1. Math Teacher                |   
-                            | 2. Doctor                      |   
-                            | 3. Personal Trainer            |
-                            | 4. Customer Service            |   
-                            | 5. Friend                      |   
+                            | 1. {NAMES.get('1', '')}        |   
+                            | 2. {NAMES.get('2', '')}        |   
+                            | 3. {NAMES.get('3', '')}        |
+                            | 4. {NAMES.get('4', '')}        |   
+                            | 5. {NAMES.get('5', '')}        |   
                             ----------------------------------
                             ---> """)
         system_prompt = get_expert_prompt(user_choice)
+
+        chat_history_expert = get_chat_history(user_choice, chat_history)
         
         if not system_prompt:
             print("Please choose a correct expert")
@@ -125,7 +86,7 @@ def chatbot_cli():
         else:
             break
 
-    print(f'Awaiting connection to {user_choice} expert...')
+    print(f"Awaiting connection to {NAMES.get(user_choice,'')} expert...")
     time.sleep(1)
     print('Connected')
 
@@ -135,16 +96,30 @@ def chatbot_cli():
             print("Goodbye!")
             break
         
-        output = llm_response(system_prompt, user_message)
-        print(f'Expert: {output}\n')
+        output = llm_response(system_prompt, user_message, chat_history_expert)
 
+        # Add the user message to the chat history
+        chat_history_expert.append(convert_chat_string_to_prompt(user_message, type="user"))
+        # Add the expert message to the chat history
+        chat_history_expert.append(convert_chat_string_to_prompt(output, type="ai"))
+
+        # Add the chat history to the overall chat history
+        chat_history[user_choice] = chat_history_expert
+
+        print(f'Expert: {output}\n')
+    save_chat_history(db_path, chat_history)
+ 
 def main():
+
+    # load chat history
+    chat_history = load_chat_history(db_path)
+
     while True:
         if input("Do you want to chat with the chatbot? (y/n): ").lower() == "n":
             print("Goodbye!")
             break
         else: 
-            chatbot_cli()
-
+            chatbot_cli(chat_history)
+   
 if __name__ == "__main__":
     main()

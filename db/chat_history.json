@@ -1,0 +1,126 @@
+{
+    "5": [
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "HumanMessage"
+            ],
+            "kwargs": {
+                "content": "i lost my ring, I am so sad",
+                "type": "human"
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "AIMessage"
+            ],
+            "kwargs": {
+                "content": "Oh no, that's awful!  I'm so sorry you lost your ring.  It's totally understandable to be upset, it's a sentimental piece.  Did you check everywhere?  Have you tried retracing your steps?  Sometimes when we're stressed, we forget where we put things.  Don't worry, we'll figure it out together!  Do you want to brainstorm some ideas? Maybe we can even make a funny little \"lost ring\" poster to put up in your neighborhood.  What do you say? \n",
+                "type": "ai",
+                "tool_calls": [],
+                "invalid_tool_calls": []
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "HumanMessage"
+            ],
+            "kwargs": {
+                "content": "sorry, I forgot what i just said. do you remember it. ",
+                "type": "human"
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "AIMessage"
+            ],
+            "kwargs": {
+                "content": "Hey, it happens to the best of us!  No worries at all. You were telling me about losing your ring, and how sad you were about it.  Do you want to talk about it more?  Maybe we can brainstorm some ways to find it together.  Or maybe you just need a friend to listen?  Whatever you need, I'm here for you. \n",
+                "type": "ai",
+                "tool_calls": [],
+                "invalid_tool_calls": []
+            }
+        }
+    ],
+    "2": [
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "HumanMessage"
+            ],
+            "kwargs": {
+                "content": "I have a little headache what am i gonna do ?",
+                "type": "human"
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "AIMessage"
+            ],
+            "kwargs": {
+                "content": "Okay, I understand. Headaches can be really annoying! \n\nTo help me understand better, could you tell me:\n\n1. **How old are you?** \n2. **How long have you had this headache?** \n3. **Is there anything else bothering you besides the headache?**  For example, are you feeling dizzy, nauseous, or having trouble seeing?\n\nOnce I have this information, I can give you some advice on how to feel better. \ud83d\ude0a\n",
+                "type": "ai",
+                "tool_calls": [],
+                "invalid_tool_calls": []
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "HumanMessage"
+            ],
+            "kwargs": {
+                "content": "I am 22 years old. It's been 10 mintutes agon. No just little headache after i went outside my room. ",
+                "type": "human"
+            }
+        },
+        {
+            "lc": 1,
+            "type": "constructor",
+            "id": [
+                "langchain",
+                "schema",
+                "messages",
+                "AIMessage"
+            ],
+            "kwargs": {
+                "content": "Okay, a headache that came on suddenly after going outside could be a few things. It's probably nothing serious, especially since it's only been 10 minutes. \n\nHere are a few things you can try:\n\n* **Rest:**  Lie down in a quiet, dark room. This can help reduce the pain.\n* **Hydrate:** Drink some water. Dehydration can sometimes trigger headaches. \n* **Cold compress:** Apply a cold compress or ice pack wrapped in a towel to your forehead or the back of your neck.\n* **Over-the-counter pain relievers:** If the headache is bothering you, you can try taking an over-the-counter pain reliever like ibuprofen or acetaminophen.\n\nIf the headache gets worse or doesn't go away after an hour or two, or if you have any other symptoms like dizziness, nausea, or trouble seeing, it's best to see a doctor just to be safe. \n\nLet me know if you have any other questions! \n",
+                "type": "ai",
+                "tool_calls": [],
+                "invalid_tool_calls": []
+            }
+        }
+    ]
+}
